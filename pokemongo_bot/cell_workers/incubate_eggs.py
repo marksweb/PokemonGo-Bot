@@ -56,10 +56,10 @@ class IncubateEggs(BaseTask):
                         '[x] Attempting to apply incubator {} to egg {}'.format(
                             incubator['id'], egg['id'])
                     )
-                self.bot.api.use_item_egg_incubator(
-                    item_id=incubator["id"], pokemon_id=egg["id"]
+                ret = self.bot.api.use_item_egg_incubator(
+                    item_id=incubator["id"],
+                    pokemon_id=egg["id"]
                 )
-                ret = self.bot.api.call()
                 if ret:
                     code = ret.get(
                         "responses", {}
@@ -128,13 +128,13 @@ class IncubateEggs(BaseTask):
                         "used": False
                     })
                 elif 'is_egg' not in pokemon and pokemon['id'] in lookup_ids:
-                    matched_pokemon.append(pokemon.update({
+                    pokemon.update({
                         "iv": [
                             pokemon.get('individual_attack', 0),
                             pokemon.get('individual_defense', 0),
                             pokemon.get('individual_stamina', 0)
-                        ]
-                    }))
+                        ]})
+                    matched_pokemon.append(pokemon)
                 continue
             if "player_stats" in inv_data:
                 self.km_walked = inv_data.get(
@@ -148,8 +148,7 @@ class IncubateEggs(BaseTask):
         return matched_pokemon
 
     def _hatch_eggs(self):
-        self.bot.api.get_hatched_eggs()
-        response_dict = self.bot.api.call()
+        response_dict = self.bot.api.get_hatched_eggs()
         log_color = 'green'
         try:
             result = reduce(
@@ -179,17 +178,16 @@ class IncubateEggs(BaseTask):
                     pokemon['name'] = "error"
         except:
             pokemon_data = [{"name": "error", "cp": "error", "iv": "error"}]
-        logger.log("-"*30, log_color)
         if not pokemon_ids or pokemon_data[0]['name'] == "error":
             logger.log(
                 "[!] Eggs hatched, but we had trouble with the response. "
                 "Please check your inventory to find your new pokemon!", 'red'
             )
             return
+        logger.log("-"*30, log_color)
         logger.log(
             "[!] {} eggs hatched! Received:".format(len(pokemon_data)), 
-            log_color
-        )
+            log_color)
         for i in range(len(pokemon_data)):
             logger.log("-"*30, log_color)
             logger.log(
