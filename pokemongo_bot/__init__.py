@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from __future__ import absolute_import, unicode_literals
+from __future__ import unicode_literals
 
 import datetime
 import json
@@ -11,7 +11,6 @@ import sys
 import time
 
 from geopy.geocoders import GoogleV3
-from pgoapi import PGoApi
 from pgoapi.utilities import f2i, get_cell_ids
 
 import cell_workers
