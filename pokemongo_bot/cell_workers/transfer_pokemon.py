@@ -1,8 +1,10 @@
+# -*- coding: utf-8 -*-
 import json
 
 from pokemongo_bot import logger
 from pokemongo_bot.human_behaviour import action_delay
 from pokemongo_bot.cell_workers.base_task import BaseTask
+
 
 class TransferPokemon(BaseTask):
     def work(self):

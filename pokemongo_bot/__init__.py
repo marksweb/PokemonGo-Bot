@@ -28,7 +28,6 @@ from .worker_result import WorkerResult
 from .tree_config_builder import ConfigException, TreeConfigBuilder
 
 
-
 class PokemonGoBot(object):
     @property
     def position(self):
@@ -106,14 +105,16 @@ class PokemonGoBot(object):
             if "catchable_pokemons" in cell and len(cell["catchable_pokemons"]):
                 catchable_pokemons += cell["catchable_pokemons"]
         
-        # If there are forts present in the cells sent from the server or we don't yet have any cell data, return all data retrieved
+        # If there are forts present in the cells sent from the server or we
+        # don't yet have any cell data, return all data retrieved
         if len(forts) > 1 or not self.cell:
             return {
                 "forts": forts,
                 "wild_pokemons": wild_pokemons,
                 "catchable_pokemons": catchable_pokemons
             }
-        # If there are no forts present in the data from the server, keep our existing fort data and only update the pokemon cells.
+        # If there are no forts present in the data from the server, keep our
+        # existing fort data and only update the pokemon cells.
         else:
             return {
                 "forts": self.cell["forts"],
@@ -245,7 +246,7 @@ class PokemonGoBot(object):
 
     @staticmethod
     def is_numeric(s):
-        try: 
+        try:
             float(s)
             return True
         except ValueError:
